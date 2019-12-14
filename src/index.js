@@ -4,6 +4,7 @@ const Softmax = require('./softmax')
 const AnnealingSoftmax = require('./annealing-softmax')
 const EpsilonGreedy = require('./epsilon-greedy')
 const ThompsonSampling = require('./thompson-sampling')
+const RandomSampling = require('./random-sampling')
 
 const handler = {
   construct (Class, args, a) {
@@ -60,6 +61,7 @@ const handler = {
       case 'UCB1':
       case 'UCB2':
       case 'ThompsonSampling':
+      case 'RandomSampling':
         if (hasOneArgs) {
           const nArms = args[0].length
           const defaultValues = Array(nArms).fill(0.0)
@@ -126,7 +128,8 @@ const algorithms = {
   softmax: Softmax,
   annealing: AnnealingSoftmax,
   epsilon: EpsilonGreedy,
-  thompson: ThompsonSampling
+  thompson: ThompsonSampling,
+  random: RandomSampling
 }
 
 module.exports = function (type) {
@@ -135,7 +138,8 @@ module.exports = function (type) {
     type === 'softmax' ||
     type === 'annealing' ||
     type === 'epsilon' ||
-    type === 'thompson'
+    type === 'thompson' ||
+    type === 'random'
 
   if (!type || !oneOf) {
     throw new Error(`unable to create factory bandit, type "${type}" does not exist`)
