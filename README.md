@@ -1,4 +1,4 @@
 For starting: 
-`node graph_test.js -s 500 -h 100`
+`node graph_test.js -s 5000 -h 100`
 
 Generated files will be stored in `examples` folder
