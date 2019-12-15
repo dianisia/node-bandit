@@ -80,11 +80,11 @@ formAndSaveGraph(
     `Number of cumulative reward for time, numSims=${numSims}, horizon=${horizon}, number of arms=${nArms}`
 );
 
-formAndSaveGraph(
+/*formAndSaveGraph(
     thompsonAvReward,
     randomAvReward,
     epsilonAvReward,
     "./examples/avReward",
     horizon,
     `Average reward for time, numSims=${numSims}, horizon=${horizon}, number of arms=${nArms}`
-);
+);*/
