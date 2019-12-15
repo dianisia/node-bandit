@@ -1,4 +1,4 @@
 For starting: 
-`node graph_test.js -s 5000 -h 100`
+`node --max-old-space-size=4096 graph_test.js -h 500 -m "[0.01, 0.02]"`
 
 Generated files will be stored in `examples` folder
