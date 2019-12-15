@@ -20,14 +20,16 @@ function getBestArmStats(results, numSims, horizons) {
     let bestArmCount = [];
     let bestArmResult = [];
     const count = Math.round(numSims / horizons);
+    bestArmResult.push({key: 0, value: 0});
 
-    for (let i = 0; i < horizons; i++) {
+    for (let i = 1; i <= horizons; i++) {
         bestArmCount[i] = 0;
         for (let j = i; j < numSims; j += horizons) {
             bestArmCount[i] += results[3][j];
         }
         bestArmResult.push({key: i, value: bestArmCount[i] / count});
     }
+
     return bestArmResult;
 }
 
@@ -35,6 +37,7 @@ function getCumRewardStats(results, numSims, horizons) {
     let cumRewardCount = [];
     let cumRewardResult = [];
     const count = Math.round(numSims / horizons);
+    cumRewardResult.push({key: 0, value: 0});
 
     for (let i = 0; i < horizons; i++) {
         cumRewardCount[i] = 0;
@@ -44,6 +47,22 @@ function getCumRewardStats(results, numSims, horizons) {
         cumRewardResult.push({key: i, value: Math.round(cumRewardCount[i] / count)});
     }
     return cumRewardResult;
+}
+
+function getAvarageReward(results, numSims, horizons) {
+    let avRewardCount = [];
+    let avRewardResult = [];
+    const count = Math.round(numSims / horizons);
+    avRewardResult.push({key: 0, value: 0});
+
+    for (let i = 0; i < horizons; i++) {
+        avRewardCount[i] = 0;
+        for (let j = i; j < numSims; j += horizons) {
+            avRewardCount[i] += results[3][j];
+        }
+        avRewardResult.push({key: i, value: avRewardCount[i] / count});
+    }
+    return avRewardResult;
 }
 
 function testAlgorithm(algo, arms, numSims, horizon) {
@@ -119,5 +138,6 @@ module.exports = {
     testAlgorithm,
     getBestArmStats,
     getCumRewardStats,
-    getHorizonForSignificanse
+    getHorizonForSignificanse,
+    getAvarageReward
 };

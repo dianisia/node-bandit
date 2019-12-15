@@ -2,7 +2,7 @@
 // for choosing actions that addresses the exploration-exploitation dilemma in the multi-armed bandit problem.
 // It consists in choosing the action that maximizes the expected reward with respect to a randomly drawn belief.
 
-const { rbeta, maxIndex } = require('./utils/math2')
+const { rbeta, maxIndex } = require('./utils/math2');
 
 /** Class representing the ThompsonSampling. */
 class ThompsonSampling {
@@ -11,11 +11,11 @@ class ThompsonSampling {
    * @param {float[]} values - Predefined values of the rewards.
    */
   constructor (counts = [], values = []) {
-    this.counts = counts
-    this.values = values
+    this.counts = counts;
+    this.values = values;
     // a.k.a prior, can also be represented as [1, 1]
-    this.a = 1
-    this.b = 1
+    this.a = 1;
+    this.b = 1;
   }
 
   /**
@@ -23,8 +23,8 @@ class ThompsonSampling {
    * @param {int} nArms - The number of arms.
    */
   initialize (nArms) {
-    this.counts = Array(nArms).fill(0)
-    this.values = Array(nArms).fill(0.0)
+    this.counts = Array(nArms).fill(0);
+    this.values = Array(nArms).fill(0.0);
   }
 
   /**
@@ -34,16 +34,14 @@ class ThompsonSampling {
   selectArm () {
     const probabilities = Array(this.counts.length).fill(0).map((_, i) => {
       // Calculate losses
-      const count = this.counts[i] // Trials
-      const successes = this.values[i] // Rewards
-      const failures = count - successes
+      const count = this.counts[i] ;// Trials
+      const successes = this.values[i] ;// Rewards
+      const failures = count - successes;
 
       // Draw random sample from beta distribution
-      const probability = rbeta(this.a + successes, this.b + failures)
-      return probability
-    })
-    // console.log("prob")
-    // console.log(probabilities)
+      const probability = rbeta(this.a + successes, this.b + failures);
+      return probability;
+    });
     return maxIndex(probabilities)
   }
 
@@ -53,10 +51,10 @@ class ThompsonSampling {
    * @param {float} reward - The reward for the arm.
    */
   update (chosenArm, reward) {
-    this.counts[chosenArm] += 1
-    const value = this.values[chosenArm]
-    this.values[chosenArm] = value + reward
+    this.counts[chosenArm] += 1;
+    const value = this.values[chosenArm];
+    this.values[chosenArm] = value + reward;
   }
 }
 
-module.exports = ThompsonSampling
+module.exports = ThompsonSampling;

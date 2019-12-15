@@ -1,10 +1,10 @@
 const output = require("d3node-output");
 const d3nLine = require('d3node-linechart');
 
-function formAndSaveGraph(firstResult, secondResult, fileName, horizon, label, sign) {
-    //console.log("!!!!!!!!!" + sign);
-    let data = sign && sign > 0 ? [firstResult, secondResult, [{key: sign, value: 0}, {key: sign, value: 100}]] :
-        [firstResult, secondResult];
+function formAndSaveGraph(firstResult, secondResult, thirdResult, fileName, horizon, label, sign) {
+    let data = sign && sign > 0 ? [
+        firstResult, secondResult, thirdResult,  [{key: sign, value: 0}, {key: sign, value: 100}]] :
+        [firstResult, secondResult, thirdResult];
     let allKeys = [];
 
     for (let i = 1; i <= horizon; ++i) {
@@ -12,15 +12,21 @@ function formAndSaveGraph(firstResult, secondResult, fileName, horizon, label, s
     }
 
     data.allKeys = allKeys;
-    const container = `<div id="container"><h2>${label}</h2><div id="chart"></div></div>`
+    const container = `
+        <div id="container"><h3>${label}</h3>
+        <div id="chart"></div>
+        <h3 style="color:steelblue">———— Thompson sampling</h3>
+        <h3 style="color:darkorange"> ———— Random sampling</h3>
+        <h3 style="color:red"> ———— Epsilon-greedy with eps=0.1</h3>
+        </div>`;
     // create output files
     output(
         fileName,
         d3nLine({
             data: data,
             container: container,
-            lineColors: ["steelblue", "darkorange"],
-            width: 1000,
+            lineColors: ["steelblue", "darkorange", "red"],
+            width: 1500,
             height: 570
         })
     );
