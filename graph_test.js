@@ -4,6 +4,7 @@ const {NormalDistribution} = require('normal-distribution');
 const ss = require('simple-statistics');
 const { jStat } = require('jstat');
 const program = require('commander');
+const path = require('path');
 
 const {
   testAlgorithm,
@@ -40,7 +41,7 @@ const thompsonResults = testAlgorithm(thompsonAlgo, arms, numSims, horizon);
 const thompsonArm = getBestArmStats(thompsonResults, numSims, horizon);
 const thompsonCumReward = getCumRewardStats(thompsonResults, numSims, horizon);
 const thompsonAvReward = getAvarageReward(thompsonResults, numSims, horizon);
-writeToFile('./examples/thompson', thompsonResults, numSims);
+writeToFile(path.join('examples', 'thompson'), thompsonResults, numSims);
 
 const randomAlgo = new RandomSampling([], []);
 randomAlgo.initialize(nArms);
@@ -48,7 +49,7 @@ const randomResults = testAlgorithm(randomAlgo, arms, numSims, horizon);
 const randomArm = getBestArmStats(randomResults, numSims, horizon);
 const randomCumReward = getCumRewardStats(randomResults, numSims, horizon);
 const randomAvReward = getAvarageReward(randomResults, numSims, horizon);
-writeToFile('./examples/random', randomResults, numSims);
+writeToFile(path.join('examples', 'thompson'), randomResults, numSims);
 
 const epsilonAlgo = new EpsilonGreedy([], []);
 epsilonAlgo.initialize(nArms);
@@ -56,7 +57,7 @@ const epsilonResults = testAlgorithm(epsilonAlgo, arms, numSims, horizon);
 const epsilonArm = getBestArmStats(epsilonResults, numSims, horizon);
 const epsilonCumReward = getCumRewardStats(epsilonResults, numSims, horizon);
 const epsilonAvReward = getAvarageReward(epsilonResults, numSims, horizon);
-writeToFile('./examples/epsilon', epsilonResults, numSims);
+writeToFile(path.join('examples', 'thompson'), epsilonResults, numSims);
 
 //const sign = getHorizonForSignificanse(0.05, thompsonCumReward, randomCumReward, horizon);
 //console.log(sign);
@@ -66,7 +67,7 @@ formAndSaveGraph(
     thompsonArm,
     randomArm,
     epsilonArm,
-    "./examples/chosenArm",
+    path.join('examples', 'chosenArm'),
     horizon,
     `Probability of selecting best arm for time, simulations number=${numSims}, horizon=${horizon}, number of arms=${nArms}`
 );
@@ -75,7 +76,7 @@ formAndSaveGraph(
     thompsonCumReward,
     randomCumReward,
     epsilonCumReward,
-    "./examples/cumReward",
+    path.join('examples', 'cumReward'),
     horizon,
     `Number of cumulative reward for time, numSims=${numSims}, horizon=${horizon}, number of arms=${nArms}`
 );
