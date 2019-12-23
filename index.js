@@ -65,6 +65,20 @@ function getAvarageReward(results, numSims, horizons) {
     return avRewardResult;
 }
 
+function getTotalReward(results, numSims, horizons) {
+    let totalRewardResult = [];
+    let j = horizons;
+    const number = Math.round(numSims / horizons);
+   /* console.log("!!!!!!!!");
+    console.log(number);*/
+    for (let i = 0; i < number; i++) {
+        totalRewardResult.push({key: i + 1, value: results[4][j-1]});
+        j += horizons;
+    }
+    //console.log(totalRewardResult);
+    return totalRewardResult;
+}
+
 function testAlgorithm(algo, arms, numSims, horizon) {
     const chosenArms = Array(numSims * horizon).fill(0.0);
     const rewards = Array(numSims * horizon).fill(0.0);
@@ -139,5 +153,6 @@ module.exports = {
     getBestArmStats,
     getCumRewardStats,
     getHorizonForSignificanse,
-    getAvarageReward
+    getAvarageReward,
+    getTotalReward
 };

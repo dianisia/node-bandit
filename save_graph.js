@@ -1,17 +1,12 @@
 const output = require("d3node-output");
 const d3nLine = require('d3node-linechart');
 
-function formAndSaveGraph(firstResult, secondResult, thirdResult, fileName, horizon, label, sign) {
+function formAndSaveGraph(firstResult, secondResult, thirdResult, fileName, keys, label, sign) {
     let data = sign && sign > 0 ? [
         firstResult, secondResult, thirdResult,  [{key: sign, value: 0}, {key: sign, value: 100}]] :
         [firstResult, secondResult, thirdResult];
-    let allKeys = [];
 
-    for (let i = 1; i <= horizon; ++i) {
-        allKeys.push(i);
-    }
-
-    data.allKeys = allKeys;
+    data.allKeys = keys;
     const container = `
         <div id="container"><h3>${label}</h3>
         <div id="chart"></div>
@@ -26,7 +21,7 @@ function formAndSaveGraph(firstResult, secondResult, thirdResult, fileName, hori
             data: data,
             container: container,
             lineColors: ["steelblue", "darkorange", "red"],
-            width: 1500,
+            width: 1200,
             height: 570
         })
     );
