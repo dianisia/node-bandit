@@ -69,14 +69,39 @@ function getTotalReward(results, numSims, horizons) {
     let totalRewardResult = [];
     let j = horizons;
     const number = Math.round(numSims / horizons);
-   /* console.log("!!!!!!!!");
-    console.log(number);*/
+
     for (let i = 0; i < number; i++) {
-        totalRewardResult.push({key: i + 1, value: results[4][j-1]});
+        totalRewardResult.push({key: i + 1, value: results[4][j - 1]});
         j += horizons;
     }
-    //console.log(totalRewardResult);
+
     return totalRewardResult;
+}
+
+function getStats(results, numSims, horizon, armsNum) {
+    //console.log(numSims, horizon);
+    const numbers = numSims > 1 ? numSims / horizon : 1;
+    let armsStats = [], armNumbers = [];
+    for (let i = 0; i < armsNum; ++i) {
+        armsStats[i] = 0;
+        armNumbers[i] = 0;
+    }
+
+    for (let i = 0; i < numbers; ++i) {
+        for (let j = i; j < (i+horizon); ++j) {
+            armsStats[results[2][j]] += results[3][j];
+            ++armNumbers[results[2][j]];
+        }
+    }
+
+    for (let i = 0; i < armsNum; ++i) {
+        //console.log(armsStats[i]);
+        armsStats[i] = Math.round(armsStats[i] / numbers);
+        armNumbers[i] = Math.round(armNumbers[i] / numbers);
+    }
+
+    //console.log(armsStats);
+    return armsStats[0];
 }
 
 function testAlgorithm(algo, arms, numSims, horizon) {
@@ -114,32 +139,24 @@ function testAlgorithm(algo, arms, numSims, horizon) {
     return [simNums, times, chosenArms, rewards, cumulativeRewards];
 }
 
-function getHorizonForSignificanse(sign, thompsonReward, randomReward, horizon) {
-    for (let i = 2; i < horizon; i += 99) {
-        const thompsonCR = thompsonReward[i - 1].value / i;
-        const thompsonSE = Math.sqrt((thompsonCR * (1 - thompsonCR)) / i);
+function getSignificance(sign, firstReward, secondReward, horizon) {
+    //for (let i = 2; i < horizon; i += 99) {
+        const CR_A = firstReward / horizon;
+        const SE_A = Math.sqrt((CR_A * (1 - CR_A)) / horizon);
 
-        const randomCR = randomReward[i - 1].value / i;
-        const randomSE = Math.sqrt((randomCR * (1 - randomCR)) / i);
+        const CR_B = secondReward / horizon;
+        const SE_B = Math.sqrt((CR_B * (1 - CR_B)) / horizon);
 
-        const SEdif = Math.sqrt(thompsonSE * thompsonSE + randomSE * randomSE);
-        const Z = (thompsonCR - randomCR) / SEdif;
+        const SEdif = Math.sqrt(SE_A * SE_A + SE_B * SE_B);
+        const Z = (CR_A - CR_B) / SEdif;
 
-        const significanse = 1 - NORMSDIST(Z);
+        const significance = 1 - NORMSDIST(Z);
 
-        /*console.log("************");
-        console.log(thompsonReward[i - 1].value);
-        console.log(randomReward[i - 1].value);
-        console.log(significanse);
-        console.log("************");*/
-
-        if (significanse < sign) {
-           /* console.log("!!!!!!!!!");
-            console.log(significanse);*/
+        /*if (significance < sign) {
             return i;
-        }
-    }
-    return 0;
+        }*/
+        return significance;
+   // }
 }
 
 function NORMSDIST(z) {
@@ -152,7 +169,8 @@ module.exports = {
     testAlgorithm,
     getBestArmStats,
     getCumRewardStats,
-    getHorizonForSignificanse,
+    getSignificance,
     getAvarageReward,
-    getTotalReward
+    getTotalReward,
+    getStats
 };
